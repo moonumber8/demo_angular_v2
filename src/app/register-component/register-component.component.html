@@ -1,0 +1,58 @@
+<div class="container">
+      <div class="row">
+          <div class="col-md-6 offset-md-3">
+              <form #myform="ngForm" name="form" [formGroup]="form" (ngSubmit)="onSubmit_data(myform.value)">
+                <div class="form-group">
+                    <label>User Name</label>
+                    <input type="text" formControlName="userName" class="form-control" pattern="[a-zA-Z ]*" [ngClass]="{ 'is-invalid': form.get('userName').touched && form.get('userName').invalid }" />
+                    <div *ngIf="form.get('userName').touched && form.get('userName').invalid" class="invalid-feedback">
+                        <div *ngIf="form.get('userName').errors.required">กรุณากรอก userName</div>
+                        <div *ngIf="form.get('userName').errors">กรุณากรอกเป็นภาษาอังกฤษเท่านั้น</div>
+
+                    </div>
+                </div>
+                  <div class="form-group">
+                      <label>First Name</label>
+                      <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': form.get('firstName').touched && form.get('firstName').invalid }" />
+                     <div class="invalid-feedback">
+                        <div>กรุณากรอกชื่อ</div>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Last Name</label>
+                      <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': form.get('lastName').touched && form.get('lastName').invalid }" />
+                      <div class="invalid-feedback">
+                        <div>กรุณากรอกนามสกุล</div>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Email</label>
+                      <input type="text" formControlName="email" class="form-control" [ngClass]="{ 'is-invalid': form.get('email').touched && form.get('email').invalid }" />
+                      <div *ngIf="form.get('email').touched && form.get('email').invalid" class="invalid-feedback">
+                          <div *ngIf="form.get('email').errors.required">กรุณากรอก email</div>
+                          <div *ngIf="form.get('email').errors.email">Email must be a valid email address</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Password</label>
+                      <input type="password" formControlName="password"  class="form-control" [ngClass]="{ 'is-invalid': form.get('password').touched && form.get('password').invalid }" />
+                      <div *ngIf="form.get('password').touched && form.get('password').invalid" class="invalid-feedback">
+                          <div *ngIf="form.get('password').errors.required">Password is required</div>
+                          <div *ngIf="form.get('password').errors.minlength">Password must be at least 6 characters</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <label>Confirm Password</label>
+                      <input type="password" formControlName="confirmPassword" appMustMatch="password" class="form-control" [ngClass]="{ 'is-invalid': form.get('confirmPassword').touched && form.get('confirmPassword').invalid }" />
+                      <div *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').invalid" class="invalid-feedback">
+                          <div *ngIf="form.get('confirmPassword').errors.required">Confirm Password is required</div>
+                          <div *ngIf="form.get('confirmPassword').errors.notEqual">Passwords must match</div>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                      <button class="btn btn-primary" [disabled]="!form.valid">Register</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
