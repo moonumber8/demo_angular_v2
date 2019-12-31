@@ -12,6 +12,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule  }   from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ConfirmEqualValidatorDirective } from './mustMatch/must-match.validator';
+import { ReviewComponent } from './review/review.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+
 
 class MyErrorHandler implements ErrorHandler {
   handleError(error) {
@@ -26,11 +29,13 @@ class MyErrorHandler implements ErrorHandler {
     LoginComponentComponent,
     HomeComponent,
     ConfirmEqualValidatorDirective,
-    TopBarComponent
+    TopBarComponent,
+    ReviewComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
+    CKEditorModule,
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
@@ -38,6 +43,7 @@ class MyErrorHandler implements ErrorHandler {
       {path: 'register', component: RegisterComponentComponent},
       {path: 'login', component: LoginComponentComponent},
       {path: 'home', component: HomeComponent},
+      {path: 'review', component: ReviewComponent},
       {path: '', component: HomeComponent}
     ]),
     BrowserAnimationsModule

@@ -1,0 +1,23 @@
+<div class="container">
+    <br>
+    <div class="row">
+        <div class="col-md-6 offset-md-12">
+            <form #myform="ngForm" name="form" [formGroup]="form" >
+                <div>
+                    <input type="file" name="image" multiple (change)="selectImage($event)" />
+                    <button class="btn btn-primary" (click)="uploadData()">Register</button>
+                </div>
+                <br>
+                <div class="form-group">
+                  <input type="text" formControlName="review_topic" class="form-control" />
+                </div>
+                <ckeditor [editor]="Editor" data="" ></ckeditor>
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary" (click)="onSubmit_data(myform.value)">Register</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+

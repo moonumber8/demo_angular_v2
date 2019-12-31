@@ -12,6 +12,13 @@ var data_schema = mongoose.Schema({
 });
 
 
+var data_review_schema = mongoose.Schema({
+  text_review:   {type:String},
+  user_id: {type:String},
+  update_timestam: {type:String},
+  create_timestam: {type:String}
+});
+
   
 data_schema.methods.setPassword = function(password){
     this.salt = crypto.randomBytes(16).toString('hex');
@@ -37,4 +44,7 @@ data_schema.methods.setPassword = function(password){
   
 
 var dataModel = mongoose.model('datas', data_schema);
-module.exports = dataModel;
+var dataReviewModel = mongoose.model('review', data_review_schema);
+module.exports = dataModel,dataReviewModel;
+
+

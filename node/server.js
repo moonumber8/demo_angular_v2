@@ -6,7 +6,18 @@ const dataModel = require('./data_schema');
 const bcrypt = require('bcrypt');
 const { forwardAuthenticated } = require('./auth');
 const router = express.Router();
+const multer = require('multer');
 
+const storage = multer.diskStorage({
+    destination: (req, file, callBack) => {
+        callBack(null, 'uploads') //กำหนด ชื่อ folder สำหรับเก็บรูป
+    },
+    filename: (req, file, callBack) => {
+        callBack(null, `FunOfHeuristic_${file.originalname}`)
+    }
+  })
+  
+const upload = multer({ storage: storage })
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
@@ -44,6 +55,18 @@ app.post('/login', async function (req, res){
    res.send("data: " + users.password)
    
 });
+
+
+app.post('/file', upload.single('file'), (req, res, next) => {
+    const file = req.file;
+    var result = file.filename.replace(/ /g, "_");
+    if(!file){
+        const error = new Error('กรุณา upload ไฟล์')
+        error.httpStatusCode = 400
+        return next(error)
+    }
+    res.send(result);
+})
 
 app.listen(3000,()=>{
     console.log("server ok");
