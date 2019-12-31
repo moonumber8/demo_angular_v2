@@ -4,24 +4,14 @@ const app = express();
 require('./db');
 const dataModel = require('./data_schema');
 const bcrypt = require('bcrypt');
-const passport = require('passport');
-const flash = require('express-flash');
-const session = require('express-session');
+const { forwardAuthenticated } = require('./auth');
+const router = express.Router();
 
-// const initializePassport = require('./passport-config');
-// initializePassport(passport, user =>  user.find(user => user.user === user));
 
-const users = [];
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
-// app.use(flash());
-// app.user(session({
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false
-// }))
-app.use(passport.initialize())
-app.use(passport.session())
+
+
 app.use(function (req,res,next){
     res.setHeader('Access-Control-Allow-Origin','*');
     res.setHeader('Access-Control-Allow-methods','GET,POST,PUT,DELETE');
@@ -41,13 +31,6 @@ app.route('/register').get(function(req, res){
     res.send("delete")
 });
 
-
-app.post('/login', passport.authenticate('local',{
-    successRedirect: '/',
-    failureRedirect: '/login',
-    failureFlash: true
-}))
-
 app.post('/login', async function (req, res){
     const hashedPassword = await bcrypt.hash(req.body.password, 10)
      users = {
@@ -57,7 +40,9 @@ app.post('/login', async function (req, res){
         }
         //res.redirect('/login')  
    console.log(users);
-   //res.send("data: " + users.password)
+
+   res.send("data: " + users.password)
+   
 });
 
 app.listen(3000,()=>{

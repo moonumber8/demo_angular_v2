@@ -1,25 +1,52 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb+srv://chanin034:Chanin067635741@cluster0-jqide.mongodb.net/tb_user?retryWrites=true&w=majority',{ useNewUrlParser: true });
+//mongoose.connect('mongodb+srv://chanin034:Chanin067635741@cluster0-jqide.mongodb.net/tb_user?retryWrites=true&w=majority',{ useNewUrlParser: true });
+
+// var mongoose = require('mongoose');
+var gracefulShutdown;
+var dbURI = 'mongodb+srv://chanin034:Chanin067635741@cluster0-jqide.mongodb.net/tb_user?retryWrites=true&w=majority';
+if (process.env.NODE_ENV === 'production') {
+  dbURI = process.env.MONGOLAB_URI;
+}
+
+mongoose.connect(dbURI);
 
 // CONNECTION EVENTS
-// When successfully connected
-mongoose.connection.on('connected', function () {  
-    console.log('Mongoose default connection open to ');
-  });  
-  // If the connection throws an error
-  mongoose.connection.on('error',function (err) {  
-    console.log('Mongoose default connection error: ' + err);
-  }); 
-  
-  // When the connection is disconnected
-  mongoose.connection.on('disconnected', function () {  
-    console.log('Mongoose default connection disconnected'); 
+mongoose.connection.on('connected', function() {
+  console.log('Mongoose connected to ' + dbURI);
+});
+mongoose.connection.on('error', function(err) {
+  console.log('Mongoose connection error: ' + err);
+});
+mongoose.connection.on('disconnected', function() {
+  console.log('Mongoose disconnected');
+});
+
+// CAPTURE APP TERMINATION / RESTART EVENTS
+// To be called when process is restarted or terminated
+gracefulShutdown = function(msg, callback) {
+  mongoose.connection.close(function() {
+    console.log('Mongoose disconnected through ' + msg);
+    callback();
   });
-  
-  // If the Node process ends, close the Mongoose connection 
-  process.on('SIGINT', function() {  
-    mongoose.connection.close(function () { 
-      console.log('Mongoose default connection disconnected through app termination'); 
-      process.exit(0); 
-    }); 
-  }); 
+};
+// For nodemon restarts
+process.once('SIGUSR2', function() {
+  gracefulShutdown('nodemon restart', function() {
+    process.kill(process.pid, 'SIGUSR2');
+  });
+});
+// For app termination
+process.on('SIGINT', function() {
+  gracefulShutdown('app termination', function() {
+    process.exit(0);
+  });
+});
+// For Heroku app termination
+process.on('SIGTERM', function() {
+  gracefulShutdown('Heroku app termination', function() {
+    process.exit(0);
+  });
+});
+
+// BRING IN YOUR SCHEMAS & MODELS
+require('./data_schema');
