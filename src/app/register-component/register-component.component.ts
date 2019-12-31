@@ -38,13 +38,16 @@ export class RegisterComponentComponent implements OnInit {
 
     let obj_data = { 
         email: data.email,
-        username: data.username,
+        firstName: data.firstName,
+        lastName: data.lastName,
+        username: data.userName,
         password: data.password,
-        password_confirm: data.password_confirm,
         create_timestam: newdate
     }; 
     this.http.post<any>('http://localhost:3000/register', obj_data).subscribe(result=>{
       this.mDataArray = result.data
+      alert("บันทึกเสร็จเรียบร้อย");
+     window.location.reload();
     });
     
   }

@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/user',{ useNewUrlParser: true });
+mongoose.connect('mongodb+srv://chanin034:Chanin067635741@cluster0-jqide.mongodb.net/tb_user?retryWrites=true&w=majority',{ useNewUrlParser: true });
 
 // CONNECTION EVENTS
 // When successfully connected
